@@ -38,7 +38,7 @@ function getKoalas() {
     $('#viewKoalas').empty();
     $.ajax({
         type: 'GET',
-        url: '/',
+        url: '/koalas',
     }).then(response => {
         console.log('Got data from the server', response);
 
