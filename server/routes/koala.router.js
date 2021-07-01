@@ -23,6 +23,20 @@ pool.on('error', (err, client) => {
 });
 
 // GET
+koalaRouter.get('/', (req, res) => {
+
+    let qText = 'Select * FROM "koalalist";';
+
+    pool.query(qText)
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+            console.log('Error trying to get koala list from DB', err);
+            res.sendStatus(500);
+        });
+
+});
 
 
 // POST
