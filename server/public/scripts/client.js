@@ -25,11 +25,11 @@ function setupClickListeners() {
         // call saveKoala with the new obejct
         saveKoala(koalaToSend);
     });
-    $('#nameIn').val(''),
-        $('#ageIn').val(''),
-        $('#genderIn').val(''),
-        $('#readyForTransferIn').val(''),
-        $('notesIn').val('')
+    $('#nameIn').val('');
+    $('#ageIn').val('');
+    $('#genderIn').val('');
+    $('#readyForTransferIn').val('');
+    $('notesIn').val('');
 }
 
 function getKoalas() {
