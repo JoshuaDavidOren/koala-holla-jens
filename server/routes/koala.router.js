@@ -52,7 +52,25 @@ koalaRouter.post('/', (req, res) => {
 });
 
 // PUT
+koalaRouter.put('/:id', (req, res) => {
+    const koalaId = req.params.id;
 
+    // SQL query for updating ready_to_transfer to true by id
+    let  queryText = `
+        UPDATE "koalalist"
+        SET "ready_to_transfer" = 'TRUE'
+        WHERE id = $1;`;
+
+    pool.query(queryText, [koalaId])
+      .then(dbResponse => {
+        console.log('Updated row count: ', dbResponse.rowCount);
+        res.sendStatus(202);
+      })
+      .catch(error => {
+        console.log('There was an error updating the record.', error);
+        res.sendStatus(500);
+      });
+})
 
 // DELETE
 koalaRouter.delete('/:id', (req, res) => {
