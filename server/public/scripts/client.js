@@ -65,7 +65,9 @@ function saveKoala(koalaToSend) {
     $.ajax({
         type: 'POST',
         url: '/koalas',
+  post-koalas
         data: koalaToSend
+
     }).then(function (response) {
         console.log('getting back Koalas');
         getKoalas();
