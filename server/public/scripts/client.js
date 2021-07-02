@@ -47,7 +47,6 @@ function getKoalas() {
             //default case: no transfer button
             let transferButton = "";
             //if ready_for_transfer is false, add html for button
-            console.log('ready for transfer:', i.ready_to_transfer);
             if (i.ready_to_transfer === false) {
                 transferButton = `<button class="transfer-button" data-id=${i.id}>Ready for Transfer</button>`;
             }
