@@ -7,7 +7,7 @@ $(document).ready(function() {
     // load existing koalas on page load
     getKoalas();
     $("#viewKoalas").on("click", ".transfer-button", updateReadyToTransfer);
-    $("#viewKoalas").on("click", ".transfer-button", deleteKoala);
+    $("#viewKoalas").on("click", ".delete-button", deleteKoala);
 }); // end doc ready
 
 function setupClickListeners() {
@@ -34,12 +34,12 @@ function setupClickListeners() {
         };
         // call saveKoala with the new obejct
         saveKoala(koalaToSend);
+        $('#nameIn').val('');
+        $('#ageIn').val('');
+        $('#genderIn').val('');
+        $('#readyForTransferIn').val('');
+        $('#notesIn').val('');
     });
-    $('#nameIn').val('');
-    $('#ageIn').val('');
-    $('#genderIn').val('');
-    $('#readyForTransferIn').val('');
-    $('#notesIn').val('');
 }
 
 function getKoalas() {
@@ -58,6 +58,9 @@ function getKoalas() {
             //if ready_for_transfer is false, add html for button
             if (i.ready_to_transfer === false) {
                 transferButton = `<button class="transfer-button" data-id=${i.id}>Ready for Transfer</button>`;
+
+            } else {
+                transferButton = `<button class="transfer-button" data-id=${i.id}>*NOT* ready for Transfer</button>`;
             }
             $('#viewKoalas').append(`
                 <tr>
@@ -82,31 +85,32 @@ function saveKoala(koalaToSend) {
         type: 'POST',
         url: '/koalas',
         data: koalaToSend
-<<<<<<< HEAD
-    }).then(function (response) {
-=======
     }).then(function(response) {
->>>>>>> 05c57c5d2003e6576b5b3905d9eb8c381226837c
         console.log('getting back Koalas');
         getKoalas();
     })
 }
 
-function deleteKoala(koalaId){
+
+function deleteKoala() {
     let koalaId = $(this).data('id');
-    $.ajax({
-        method: 'DELETE',
-        url: `/koalas/${koalaId}`
-    })
-    .then((response) => {
-        console.log('Koala deleted');
-        getKoalas();
-    })
-    .catch((error) => {
-        alert ('Could not delete koala', error);
-    })
+    if (confirm("Are you sure you want to delete this koala?")){
+        if (confirm("Take this seriously. A koala's life is in your hands. Are you sure you want to delete?")) {
+            $.ajax({
+                    method: 'DELETE',
+                    url: `/koalas/${koalaId}`
+                })
+                .then((response) => {
+                    console.log('Koala deleted');
+                    getKoalas();
+                })
+                .catch((error) => {
+                    alert('Could not delete koala', error);
+                });
+        }
+    }
 }
-  
+
 function updateReadyToTransfer() {
     let koalaId = $(this).data('id');
     $.ajax({
