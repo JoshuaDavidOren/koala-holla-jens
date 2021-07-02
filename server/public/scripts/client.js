@@ -3,10 +3,11 @@ console.log('js');
 $(document).ready(function() {
     console.log('JQ');
     // Establish Click Listeners
-    setupClickListeners()
-        // load existing koalas on page load
+    setupClickListeners();
+    // load existing koalas on page load
     getKoalas();
-
+    $("#viewKoalas").on("click", ".transfer-button", updateReadyToTransfer);
+    $("#viewKoalas").on("click", ".transfer-button", deleteKoala);
 }); // end doc ready
 
 function setupClickListeners() {
@@ -15,12 +16,21 @@ function setupClickListeners() {
         // get user input and put in an object
         // NOT WORKING YET :(
         // using a test object
+        if ($('#nameIn').val("") ||
+            $('#ageIn').val("") ||
+            $('#genderIn').val("") ||
+            $('#readyForTransferIn').val("") ||
+            $('#notesIn').val("")
+            ){
+                alert("you have empty inputs!");
+                return false;
+            }
         let koalaToSend = {
             name: $('#nameIn').val(),
             age: $('#ageIn').val(),
             gender: $('#genderIn').val(),
             readyForTransfer: $('#readyForTransferIn').val(),
-            notes: $('notesIn').val(),
+            notes: $('#notesIn').val()
         };
         // call saveKoala with the new obejct
         saveKoala(koalaToSend);
@@ -29,7 +39,7 @@ function setupClickListeners() {
     $('#ageIn').val('');
     $('#genderIn').val('');
     $('#readyForTransferIn').val('');
-    $('notesIn').val('');
+    $('#notesIn').val('');
 }
 
 function getKoalas() {
@@ -43,17 +53,23 @@ function getKoalas() {
         console.log('Got data from the server', response);
 
         for (let i of response) {
+            //default case: no transfer button
+            let transferButton = "";
+            //if ready_for_transfer is false, add html for button
+            if (i.ready_to_transfer === false) {
+                transferButton = `<button class="transfer-button" data-id=${i.id}>Ready for Transfer</button>`;
+            }
             $('#viewKoalas').append(`
-      <tr>
-      <td>${i.name}</td>
-      <td>${i.age}</td>
-      <td>${i.gender}</td>
-      <td>${i.ready_for_transfer}</td>
-      <td>${i.notes}</td>
-      <td><button class="transfer-button" data-id=${i.id}>Ready for Transfer</button> </td>
-      <td><button class="delete-button" data-id=${i.id}>Delete</button></td>
-      </tr>
-      `)
+                <tr>
+                    <td>${i.name}</td>
+                    <td>${i.age}</td>
+                    <td>${i.gender}</td>
+                    <td>${i.ready_to_transfer}</td>
+                    <td>${i.notes}</td>
+                    <td>${transferButton}</td>
+                    <td><button class="delete-button" data-id=${i.id}>Delete</button></td>
+                </tr>
+            `);
         }
     });
 
@@ -66,8 +82,43 @@ function saveKoala(koalaToSend) {
         type: 'POST',
         url: '/koalas',
         data: koalaToSend
+<<<<<<< HEAD
     }).then(function (response) {
+=======
+    }).then(function(response) {
+>>>>>>> 05c57c5d2003e6576b5b3905d9eb8c381226837c
         console.log('getting back Koalas');
         getKoalas();
     })
 }
+
+function deleteKoala(koalaId){
+    let koalaId = $(this).data('id');
+    $.ajax({
+        method: 'DELETE',
+        url: `/koalas/${koalaId}`
+    })
+    .then((response) => {
+        console.log('Koala deleted');
+        getKoalas();
+    })
+    .catch((error) => {
+        alert ('Could not delete koala', error);
+    })
+}
+  
+function updateReadyToTransfer() {
+    let koalaId = $(this).data('id');
+    $.ajax({
+            method: 'PUT',
+            url: `/koalas/${koalaId}`
+        })
+        .then((response) => {
+            console.log('ready to transfer state updated');
+            getKoalas();
+        })
+        .catch((error) => {
+            console.log('There was an issue updating the ready to transfer state!', error);
+            alert('There was an issue updating the ready to transfer state');
+        });
+} //end updateReadyToTransfer
