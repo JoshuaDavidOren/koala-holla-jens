@@ -52,25 +52,3 @@ Upon completion of the project you'll need to provide not only the source (via G
 Your final product may look something like this:
 
 ![sample](sample.png)
-
-
-add database name: save_koala 
-
-CREATE TABLE koalaList (
-    "id" serial PRIMARY KEY,
-    "name" varchar(80) NOT NULL,
-    "gender" varchar(30),
-    "age" int,
-    "ready_to_transfer" boolean,
-    "notes" varchar(250) 
-);
-
-
-
-INSERT INTO koalaList ("name", "gender", "age", "ready_to_transfer", "notes")
-VALUES ('Scotty', 'M', 4, 'TRUE', 'Born in Guatemala'),
-('Jean', 'F', 5, 'TRUE', 'Allergic to lots of lava'),
-('Ororo', 'F', 7, 'FALSE', 'Loves listening to Paula Abdul'),
-('Logan', 'M', 15, 'FALSE','Loves the sauna'),
-('Charlie', 'M', 9, 'TRUE', 'Favorite band is Nirvana'),
-('Betsy', 'F', 4, 'TRUE', 'Has a pet iguana');  
