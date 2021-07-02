@@ -8,6 +8,9 @@ $(document).ready(function() {
     getKoalas();
     $("#viewKoalas").on("click", ".transfer-button", updateReadyToTransfer);
     $("#viewKoalas").on("click", ".delete-button", deleteKoala);
+    $("#viewKoalas").on("click", "tr", grabKoalaToEdit);
+    $("#addKoala").on("click", "#editButton", editKoala);
+    $("#addKoala").on("click", "#clearButton", clearKoalaForEdit);
 }); // end doc ready
 
 function setupClickListeners() {
@@ -45,6 +48,7 @@ function getKoalas() {
     console.log('in getKoalas');
     // ajax call to server to get koalas
     $('#viewKoalas').empty();
+    clearKoalaForEdit();
     $.ajax({
         type: 'GET',
         url: '/koalas',
@@ -125,3 +129,75 @@ function updateReadyToTransfer() {
             alert('There was an issue updating the ready to transfer state');
         });
 } //end updateReadyToTransfer
+
+function grabKoalaToEdit() {
+    // clear previous koala
+    clearKoalaForEdit();
+
+    // grab array of column values
+    const childrenArray = $(this).children('td');
+    
+    // extract text and write it to inputs
+    $('#nameIn').val($(childrenArray[0]).text());
+    $('#ageIn').val($(childrenArray[1]).text());
+    $('#genderIn').val($(childrenArray[2]).text());
+    $('#readyForTransferIn').val($(childrenArray[3]).text());
+    $('#notesIn').val($(childrenArray[4]).text());
+
+    // find button element, extract id from data
+    const findButton = $(childrenArray[5]).find('button');
+    const koalaId = $(findButton).data('id');
+    console.log(koalaId);
+
+    //disable add button
+    $("#addButton").prop("disabled",true);
+
+    //create edit and clear buttons
+    $( "#addKoala" ).append(`
+        <button type="button" id="editButton" data-id="${koalaId}">Edit Koala</button>
+        <button type="button" id="clearButton">Clear Koala</button>
+    `)
+} //end grabKoalaToEdit
+
+function editKoala() {
+    // get koala id
+    const koalaId = $(this).data('id');
+
+    //create koala object with updated data
+    const updatedKoala = {
+        name: $('#nameIn').val(),
+        age: $('#ageIn').val(),
+        gender: $('#genderIn').val(),
+        ready: $('#readyForTransferIn').val(),
+        notes: $('#notesIn').val()
+    };
+    $.ajax({
+            method: 'PUT',
+            url: `/koalas/edit/${koalaId}`,
+            data: updatedKoala
+        })
+        .then((response) => {
+            console.log('ready to transfer state updated');
+            getKoalas();
+        })
+        .catch((error) => {
+            console.log('There was an issue updating the ready to transfer state!', error);
+            alert('There was an issue updating the ready to transfer state');
+        });
+} //end editKoalas
+
+function clearKoalaForEdit() {
+    // clear inputs
+    $('#nameIn').val('');
+    $('#ageIn').val('');
+    $('#genderIn').val('');
+    $('#readyForTransferIn').val('');
+    $('#notesIn').val('');
+
+    // enable add button
+    $("#addButton").prop("disabled",false);
+
+    // get rid of buttons
+    $( "#editButton" ).remove();
+    $( "#clearButton" ).remove();
+} //end clearKoalaForEdit
