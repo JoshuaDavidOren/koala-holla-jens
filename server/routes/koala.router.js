@@ -26,7 +26,7 @@ pool.on('error', (err, client) => {
 // GET
 koalaRouter.get('/', (req, res) => {
 
-    let qText = 'Select * FROM "koalalist";';
+    let qText = 'Select * FROM "koalalist" ORDER BY id ASC;';
 
     pool.query(qText)
         .then(result => {
@@ -57,10 +57,10 @@ koalaRouter.post('/', (req, res) => {
 koalaRouter.put('/:id', (req, res) => {
     const koalaId = req.params.id;
 
-    // SQL query for updating ready_to_transfer to true by id
+    // SQL query for toggling ready_to_transfer id
     let queryText = `
         UPDATE "koalalist"
-        SET "ready_to_transfer" = 'TRUE'
+        SET "ready_to_transfer" = NOT "ready_to_transfer"
         WHERE id = $1;`;
 
     pool.query(queryText, [koalaId])
