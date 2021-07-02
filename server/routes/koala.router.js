@@ -44,7 +44,7 @@ koalaRouter.get('/', (req, res) => {
 koalaRouter.post('/', (req, res) => {
     const newKoala = req.body;
     const qText = `INSERT INTO "koalalist" ("name", "gender", "age", "ready_to_transfer", "notes")
-    VALUES ($1, $2, $3, $4, $5)`
+    VALUES ($1, $2, $3, $4, $5)`;
     pool.query(qText, [newKoala.name, newKoala.gender, newKoala.age, newKoala.readyForTransfer, newKoala.notes])
         .then(res.sendStatus(200))
         .catch((error) => {
