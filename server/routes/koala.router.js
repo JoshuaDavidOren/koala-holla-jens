@@ -47,12 +47,12 @@ koalaRouter.get('/', (req, res) => {
 
 
 // DELETE
-Router.delete('/:id' (req, res) => {
+koalaRouter.delete('/:id', (req, res) => {
     console.log('Request URL: ', req.url);
     console.log('Request route parameters: ', req.params);
     const koalaId = req.params.id;
     console.log(`koala id is ${koalaId}`);
-    
+
     const qText = `DELETE FROM "koalas" WHERE id = $1;
     `;
 
