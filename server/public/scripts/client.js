@@ -7,7 +7,7 @@ $(document).ready(function() {
     // load existing koalas on page load
     getKoalas();
     $("#viewKoalas").on("click", ".transfer-button", updateReadyToTransfer);
-    $("#viewKoalas").on("click", ".transfer-button", deleteKoala);
+    $("#viewKoalas").on("click", ".delete-button", deleteKoala);
 }); // end doc ready
 
 function setupClickListeners() {
@@ -79,7 +79,7 @@ function saveKoala(koalaToSend) {
     })
 }
 
-function deleteKoala(koalaId){
+function deleteKoala(){
     let koalaId = $(this).data('id');
     $.ajax({
         method: 'DELETE',

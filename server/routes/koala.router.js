@@ -81,12 +81,12 @@ koalaRouter.delete('/:id', (req, res) => {
     const koalaId = req.params.id;
     console.log(`koala id is ${koalaId}`);
 
-    const qText = `DELETE FROM "koalas" WHERE id = $1;
+    const qText = `DELETE FROM "koalalist" WHERE id = $1;
     `;
 
     pool.query(qText, [koalaId])
         .then(dbResponse => {
-            console.log(`${drResponse.rowCount === 1} was deleted from database`);
+            console.log(`${dbResponse.rowCount === 1} was deleted from database`);
             res.sendStatus(201)
         })
         .catch(error => {
