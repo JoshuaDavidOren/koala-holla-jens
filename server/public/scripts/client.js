@@ -79,6 +79,20 @@ function saveKoala(koalaToSend) {
     })
 }
 
+function deleteKoala(koalaId){
+    $.ajax({
+        method: 'DELETE',
+        url: '/koalas'
+    })
+    .then((response) => {
+        console.log('Koala deleted');
+        getKoalas();
+    })
+    .catch((error) => {
+        alert ('Could not delete koala', error);
+    })
+}
+  
 function updateReadyToTransfer() {
     let koalaId = $(this).data('id');
     $.ajax({
