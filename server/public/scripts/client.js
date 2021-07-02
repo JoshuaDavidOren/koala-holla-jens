@@ -14,17 +14,16 @@ function setupClickListeners() {
     $('#addButton').on('click', function() {
         console.log('in addButton on click');
         // get user input and put in an object
-        // NOT WORKING YET :(
         // using a test object
-        if ($('#nameIn').val("") ||
-            $('#ageIn').val("") ||
-            $('#genderIn').val("") ||
-            $('#readyForTransferIn').val("") ||
-            $('#notesIn').val("")
+        if ($('#nameIn').val() === "" ||
+            $('#ageIn').val() === "" ||
+            $('#genderIn').val() === "" ||
+            $('#readyForTransferIn').val() ==="" ||
+            $('#notesIn').val() === ""
             ){
                 alert("you have empty inputs!");
                 return false;
-            }
+            };
         let koalaToSend = {
             name: $('#nameIn').val(),
             age: $('#ageIn').val(),
@@ -32,7 +31,7 @@ function setupClickListeners() {
             readyForTransfer: $('#readyForTransferIn').val(),
             notes: $('#notesIn').val()
         };
-        // call saveKoala with the new obejct
+        // call saveKoala with the new object
         saveKoala(koalaToSend);
         $('#nameIn').val('');
         $('#ageIn').val('');
@@ -57,10 +56,10 @@ function getKoalas() {
             let transferButton = "";
             //if ready_for_transfer is false, add html for button
             if (i.ready_to_transfer === false) {
-                transferButton = `<button class="transfer-button" data-id=${i.id}>Ready for Transfer</button>`;
+                transferButton = `<button class="transfer-button" data-id=${i.id}>Mark as ready for Transfer</button>`;
 
             } else {
-                transferButton = `<button class="transfer-button" data-id=${i.id}>*NOT* ready for Transfer</button>`;
+                transferButton = `<button class="transfer-button" data-id=${i.id}>Mark as *NOT* ready for Transfer</button>`;
             }
             $('#viewKoalas').append(`
                 <tr>
