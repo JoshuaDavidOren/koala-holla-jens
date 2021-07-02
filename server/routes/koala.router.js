@@ -75,6 +75,30 @@ koalaRouter.put('/:id', (req, res) => {
         });
 })
 
+koalaRouter.put('/edit/:id', (req, res) => {
+    const koalaId = req.params.id;
+
+    // SQL query for toggling ready_to_transfer id
+    let queryText = `
+        UPDATE "koalalist"
+        SET "name" = $1,
+            "gender" = $2,
+            "age" = $3,
+            "ready_to_transfer" = $4,
+            "notes" = $5
+        WHERE id = $6;`;
+
+    pool.query(queryText, [req.body.name, req.body.gender, req.body.age, req.body.ready, req.body.notes, koalaId])
+        .then(dbResponse => {
+            console.log('Updated row count: ', dbResponse.rowCount);
+            res.sendStatus(202);
+        })
+        .catch(error => {
+            console.log('There was an error updating the record.', error);
+            res.sendStatus(500);
+        });
+})
+
 // DELETE
 koalaRouter.delete('/:id', (req, res) => {
     console.log('Request URL: ', req.url);
