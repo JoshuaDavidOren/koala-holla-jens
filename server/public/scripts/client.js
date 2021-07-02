@@ -82,17 +82,21 @@ function saveKoala(koalaToSend) {
 
 function deleteKoala() {
     let koalaId = $(this).data('id');
-    $.ajax({
-            method: 'DELETE',
-            url: `/koalas/${koalaId}`
-        })
-        .then((response) => {
-            console.log('Koala deleted');
-            getKoalas();
-        })
-        .catch((error) => {
-            alert('Could not delete koala', error);
-        })
+    if (confirm("Are you sure you want to delete this koala?")){
+        if (confirm("Take this seriously. A koala's life is in your hands. Are you sure you want to delete?")) {
+            $.ajax({
+                    method: 'DELETE',
+                    url: `/koalas/${koalaId}`
+                })
+                .then((response) => {
+                    console.log('Koala deleted');
+                    getKoalas();
+                })
+                .catch((error) => {
+                    alert('Could not delete koala', error);
+                });
+        }
+    }
 }
 
 function updateReadyToTransfer() {
