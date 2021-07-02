@@ -65,11 +65,23 @@ function saveKoala(koalaToSend) {
     $.ajax({
         type: 'POST',
         url: '/koalas',
-  post-koalas
         data: koalaToSend
-
-    }).then(function (response) {
+    }).then(function(response) {
         console.log('getting back Koalas');
         getKoalas();
+    })
+}
+
+function deleteKoala(koalaId){
+    $.ajax({
+        method: 'DELETE',
+        url: '/koalas'
+    })
+    .then((response) => {
+        console.log('Koala deleted');
+        getKoalas();
+    })
+    .catch((error) => {
+        alert ('Could not delete koala', error)
     })
 }
