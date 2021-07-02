@@ -3,9 +3,41 @@ const express = require('express');
 const koalaRouter = express.Router();
 
 // DB CONNECTION
+const pg = require('pg');
+const Pool = pg.Pool;
+const config = {
+    database: 'save_koala',
+    host: 'localhost',
+    port: 5432,
+    max: 10,
+    idleTimeoutMillis: 30000,
+};
 
+const pool = new Pool(config);
+
+pool.on('connect', (client) => {
+    console.log('PostgeSQL connected');
+});
+
+pool.on('error', (err, client) => {
+    console.log('Unexpected error client are you there?', err);
+});
 
 // GET
+koalaRouter.get('/', (req, res) => {
+
+    let qText = 'Select * FROM "koalalist";';
+
+    pool.query(qText)
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+            console.log('Error trying to get koala list from DB', err);
+            res.sendStatus(500);
+        });
+
+});
 
 
 // POST
@@ -15,7 +47,7 @@ const koalaRouter = express.Router();
 
 
 // DELETE
-Router.delete('/:id' (req, res) => {
+koalaRouter.delete('/:id' (req, res) => {
     console.log('Request URL: ', req.url);
     console.log('Request route parameters: ', req.params);
     const koalaId = req.params.id;
