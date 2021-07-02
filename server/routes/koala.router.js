@@ -57,6 +57,7 @@ koalaRouter.post('/', (req, res) => {
 koalaRouter.put('/:id', (req, res) => {
     const koalaId = req.params.id;
 
+
     // SQL query for toggling ready_to_transfer id
     let queryText = `
         UPDATE "koalalist"
@@ -80,7 +81,7 @@ koalaRouter.delete('/:id', (req, res) => {
     console.log('Request route parameters: ', req.params);
     const koalaId = req.params.id;
     console.log(`koala id is ${koalaId}`);
-
+  
     const qText = `DELETE FROM "koalalist" WHERE id = $1;
     `;
 
