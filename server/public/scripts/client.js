@@ -3,9 +3,10 @@ console.log('js');
 $(document).ready(function() {
     console.log('JQ');
     // Establish Click Listeners
-    setupClickListeners()
-        // load existing koalas on page load
+    setupClickListeners();
+    // load existing koalas on page load
     getKoalas();
+    $( "#viewKoalas").on("click",".transfer-button", updateReadyToTransfer);
 
 }); // end doc ready
 
@@ -43,17 +44,24 @@ function getKoalas() {
         console.log('Got data from the server', response);
 
         for (let i of response) {
+            //default case: no transfer button
+            let transferButton = "";
+            //if ready_for_transfer is false, add html for button
+            console.log('ready for transfer:', i.ready_to_transfer);
+            if (i.ready_to_transfer === false) {
+                transferButton = `<button class="transfer-button" data-id=${i.id}>Ready for Transfer</button>`;
+            }
             $('#viewKoalas').append(`
-      <tr>
-      <td>${i.name}</td>
-      <td>${i.age}</td>
-      <td>${i.gender}</td>
-      <td>${i.ready_for_transfer}</td>
-      <td>${i.notes}</td>
-      <td><button class="transfer-button" data-id=${i.id}>Ready for Transfer</button> </td>
-      <td><button class="delete-button" data-id=${i.id}>Delete</button></td>
-      </tr>
-      `)
+                <tr>
+                    <td>${i.name}</td>
+                    <td>${i.age}</td>
+                    <td>${i.gender}</td>
+                    <td>${i.ready_to_transfer}</td>
+                    <td>${i.notes}</td>
+                    <td>${transferButton}</td>
+                    <td><button class="delete-button" data-id=${i.id}>Delete</button></td>
+                </tr>
+            `);
         }
     });
 
@@ -71,3 +79,19 @@ function saveKoala(koalaToSend) {
         getKoalas();
     })
 }
+
+function updateReadyToTransfer() {
+    let koalaId = $(this).data('id');
+    $.ajax({
+      method: 'PUT',
+      url: `/koalas/${koalaId}`
+    })
+      .then((response) => {
+        console.log('ready to transfer state updated');
+        getKoalas();
+      })
+      .catch((error) => {
+        console.log('There was an issue updating the ready to transfer state!', error);
+        alert('There was an issue updating the ready to transfer state');
+      });
+  } //end updateReadyToTransfer
