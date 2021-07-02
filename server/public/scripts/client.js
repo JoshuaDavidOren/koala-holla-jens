@@ -7,7 +7,7 @@ $(document).ready(function() {
     // load existing koalas on page load
     getKoalas();
     $("#viewKoalas").on("click", ".transfer-button", updateReadyToTransfer);
-
+    $("#viewKoalas").on("click", ".transfer-button", deleteKoala);
 }); // end doc ready
 
 function setupClickListeners() {
@@ -80,9 +80,10 @@ function saveKoala(koalaToSend) {
 }
 
 function deleteKoala(koalaId){
+    let koalaId = $(this).data('id');
     $.ajax({
         method: 'DELETE',
-        url: '/koalas'
+        url: `/koalas/${koalaId}`
     })
     .then((response) => {
         console.log('Koala deleted');
