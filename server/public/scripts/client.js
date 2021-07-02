@@ -59,13 +59,14 @@ function getKoalas() {
 
 } // end getKoalas
 
-function saveKoala(newKoala) {
-    console.log('in saveKoala', newKoala);
+function saveKoala(koalaToSend) {
+    console.log('in saveKoala', koalaToSend);
     // ajax call to server to get koalas
     $.ajax({
         type: 'POST',
         url: '/koalas',
-    }).then(function (response) {
+        data: koalaToSend
+    }).then(function(response) {
         console.log('getting back Koalas');
         getKoalas();
     })
